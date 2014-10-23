@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Designing Interactive Data Visualization - by @phil_renaud</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/beige.css" id="theme">
+		<link rel="stylesheet" href="css/custom.css">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Designing Interactive Data Visualization</h1>
+					<p>
+						<a href="http://twitter.com/phil_renaud" target="_blank">@phil_renaud</a>
+					</p>
+          <p>Slides: <a href="http://collide.riot.industries/slides">collide.riot.industries/slides</a></p>
+				</section>
+
+				<section>
+					<h2>1. Why do we care about data visualization?</h2>
+				</section>
+
+				<section>
+					<h3>We're pretty good at recording data.</h3>
+					<p>Too good, probably.</p>
+					<ul>
+						<li class="fragment">On an average day, Twitter generates about 500 million tweets. That's about 15 times the number of books in the Library of Congress</li>
+						<li class="fragment">In August 2010, Eric Schmidt, former CEO of Google, said that between the beginning of time and 2003, humanity generated about 5 exabytes (5 x 10<sup><small>18</small></sup> bytes) of data.</li>
+						<li class="fragment">Now, we generate that much data roughly every 2 days.</li>
+					</ul>
+				</section>
+
+				<section>
+					<p>These mountains of data add up. We record much more data than we can possibly analyze 1:1 in a lifetime.</p>
+					<h3>Even when we aggregate data, it's not always clear what's going on.</h3>
+				</section>
+
+				<section>
+					<p>And this is sort of a bummer, because</p>
+					<h1>Data is only valuable when it's understood.</h1>
+				</section>
+
+				<section>
+					<h3>Anscombe's Quartet</h3>
+					<li>4 Datasets with nearly-identical statistical properties</li>
+					<img src="images/anscombe1.jpg" alt="Anscombe's Quartet" />
+				</section>
+
+				<section>
+					<h3>Anscombe's Quartet</h3>
+					<li>Upon visual analysis, could not be more distinct from one another.</li>
+					<img src="images/anscombe2.jpg" alt="Anscombe's Quartet" />
+				</section>
+
+				<section>
+					<h3>Statistical Detection of ... ?</h3>
+					<img src="images/elections-1.png" alt="Elections data" />
+					<p><small><a href="http://www.pnas.org/content/suppl/2012/09/21/1210722109.DCSupplemental/pnas.201210722SI.pdf#nameddest=ST4" target="_blank">source</a></small></p>
+				</section>
+
+				<section>
+					<h2>Statistical Detection of Election Fraud</h2>
+					<img src="images/elections-2.jpg" alt="Elections data" />
+					<p><small><a href="http://www.pnas.org/content/early/2012/09/20/1210722109.full.pdf+html" target="_blank">source</a></small></p>
+				</section>
+
+				<section>
+					<h3>Visualization lends meaning to raw data.</h3>
+				</section>
+
+				<section>
+					<h2>2. Data Journalism <br /> and Critical Thinking</h2>
+				</section>
+
+				<section>
+					<ul>
+						<li>In addition to recording data at an unprecedented rate, we've become very good at exposing it as well.</li>
+						<li class="fragment">City open-data policies, like <a href="https://www.halifaxopendata.ca/" target="_blank">Halifax Open Data</a></li>
+						<li class="fragment">Scientific data, like <a href="http://www.1000genomes.org/" target="_blank">The 1000 Genomes project</a></li>
+						<li class="fragment">APIs as interfaces to otherwise obfuscated data, like <a href="https://github.com/censusreporter/censusreporter" target="_blank">Census Reporter</a></li>
+						<li class="fragment">Github repositories of data behind investigative news, like  <a href="https://github.com/fivethirtyeight/data" target="_blank">FiveThirtyEight's Data</a></li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>This access provides us with the means to think critically about the world around us.</li>
+						<li class="fragment">If you know even basic spreadsheet use, you can start using the aforementioned data to research the subject of your choice.
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>Journalists have taken this to its logical next-step: Data-Driven investigative journalism.</li>
+						<img class="fragment" src="images/538.jpg" alt="FiveThirtyEight" style="float: right; margin-left: 50px;" />
+						<li class="fragment">Sites like <a href="http://fivethirtyeight.com" target="b0ank">FiveThirtyEight</a> and NYTimes' <a href="http://www.nytimes.com/upshot" target="blank">The Upshot</a> give us ways to think about their data.</li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>In the absence of the ability to code and analyze the information ourselves, Data-Driven Journalism sites do us a great service when they provide methods for us to interact with their data.</li>
+						<li class="fragment">A mainstay of Data Journalism is the pairing of a story with the understanding that a reader's interpretation of it may differ.</li>
+						<li class="fragment">In practical terms, this means that the best data journalism allows the reader to sort, filter, combine and rearrange data through a visual interface.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>3. Data Visualization: <br />Best Practices</h2>
+				</section>
+
+				<section>
+					<li>In terms of static data visualization, we've been working at this for a long time. From 1910:</li>
+					<img src="images/rules.jpg" alt="Properties of Visual Encodings" />
+				</section>
+
+				<section>
+					<li>Good data design adheres to the properties of the visual encodings it uses</li>
+					<img src="images/properties.jpg" alt="Properties of Visual Encodings" />
+				</section>
+
+				<section>
+					<ul>
+						<li>Certain types of visualizations are well-suited to particular data types:</li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>Bar charts are boring, but well-suited to allow us to quickly determine differences in quantity:</li>
+						<img src="images/bar.jpg" alt="Bar Chart" />
+						<li class="fragment">Sometimes pie graphs are okay for this too, but be warned: at a glance, people don't see area, they see height.</li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>Treemaps show quantity, plus a sense of hierarchy</li>
+						<img src="images/tree.jpg" alt="Tree Chart" />
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>Maps provide several ways to show physical location.</li>
+						<img src="images/map.jpg" alt="Heatmap" style="float: left;" />
+						<img src="images/map2.jpg" alt="Pizza in Halifax" style="float: left; width: 50%; margin-left: 10px; " />
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>Maps are particularly versatile because of our common understanding of their expected shape; differences from our expectations let us see a different kind of story:</li>
+						<img src="images/cartogram.jpg" alt="cartogram" />
+						<li>This cartogram shows expected popularion by 2300. It is only by changing our previous knowledge of the shape of the world that this has any effect.</li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>Time-Series charts show how quantitative values change over time:</li>
+						<img src="images/timeseries.jpg" alt="Timeseries" />
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>Scatter plots show us the differences between things in two dimensions</li>
+						<img src="images/scatter.jpg" alt="scatter plot" />
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>Network graphs show us the relationships between things - for example, this map of all of the followers of @CollideHalifax</li>
+						<img src="images/network.jpg" alt="CollideHFX Network Graph" />
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>But - well-suitedness of interaction in data visualization is harder to pin down.</li>
+						<li class="fragment">Part of the difficulty: Giving users control over data means we can't test every possible outcome.</li>
+						<li class="fragment">This is okay! Letting a user have control of visuals is worth the potential to show your warts.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>4. The Qualities of Highly Successful Interactive Data Visulizations</h2>
+				</section>
+
+				<section>
+					<h3>The Guardian - The state of our union is ... dumber</h3>
+					<a href="http://www.theguardian.com/world/interactive/2013/feb/12/state-of-the-union-reading-level" target="_blank">
+					<img src="images/parsing.jpg" alt="Parsing" />
+					<br /><span>source</span>
+					</a>
+					<p>Scatter plot/ Time series, Small multiples. Allows user to parse and reveal.</p>
+				</section>
+
+				<section>
+					<h3>BBC: Scotland Decides</h3>
+					<a href="http://www.bbc.com/news/events/scotland-decides/results" target="_blank">
+					<img src="images/scotland.jpg" alt="Scotland Decides" />
+					<br /><span>source</span>
+					</a>
+					<p>Normalized bar chart, Map. Allows user to sort data.</p>
+				</section>
+
+				<section>
+					<h3>The Guardian - Violence and guns in best-selling video games</h3>
+					<a href="http://www.theguardian.com/world/interactive/2013/apr/30/violence-guns-best-selling-video-games" target="_blank">
+					<img src="images/guns.jpg" alt="Filtering" />
+					<br /><span>source</span>
+					</a>
+					<p>Radial Bar Graph with edge-bundling. Allows user to filter.</p>
+				</section>
+
+				<section>
+					<p>Quick aside: be considerate about how you categorize.</p>
+					<img src="images/categories.jpg" alt="Tomahawks" />
+				</section>
+
+				<section>
+					<h3>NPR - When are people working?</h3>
+					<a href="http://www.npr.org/blogs/money/2014/08/27/343415569/whos-in-the-office-the-american-workday-in-one-graph" target="_blank">
+					<img src="images/hours.jpg" alt="When are people working?" />
+					<br /><span>source</span>
+					</a>
+					<p>Area Graph. Allows user to visually compare.</p>
+				</section>
+
+				<section>
+					<h3>Musicians' Deaths by Age</h3>
+					<a href="http://geeksta.net/visualizations/age-musicians-die/" target="_blank">
+					<img src="images/musicians.jpg" alt="When do Musicians Die?" />
+					<br /><span>source</span>
+					</a>
+					<p>Time Series. Allows user to filter based on category.</p>
+				</section>
+
+				<section>
+					<h3>Visualizing MBTA Data</h3>
+					<a href="http://mbtaviz.github.io/" target="_blank">
+					<img src="images/subway.jpg" alt="Visualizing MBTA Data" />
+					<br /><span>source</span>
+					</a>
+					<p>Parallel Coordinates, Maps, Bar and Area. Allows user to explore relative and absolute time, and compare stations/trains.</p>
+				</section>
+
+				<section>
+					<h3>dc.js</h3>
+					<a href="http://dc-js.github.io/dc.js/" target="_blank">
+					<img src="images/dc.jpg" alt="dc" />
+					<br /><span>source</span>
+					</a>
+					<p>All the things.</p>
+				</section>
+
+				<section>
+					<h3>Githut</h3>
+					<a href="http://githut.info/" target="_blank">
+					<img src="images/githut.jpg" alt="Lang Compare" />
+					<br /><span>source</span>
+					</a>
+					<p>Small Multiples, Parallel Coordinates, Bar Chart. Allows user to compare languages, and view how they vary over time.</p>
+				</section>
+
+				<section>
+					<h3>NY Times: How the Recession Reshaped the Economy, in 255 Charts</h3>
+					<a href="http://www.nytimes.com/interactive/2014/06/05/upshot/how-the-recession-reshaped-the-economy-in-255-charts.html?abt=0002&abg=0" target="_blank">
+					<img src="images/recession.jpg" alt="Recession vs Economy" />
+					<br /><span>source</span>
+					</a>
+					<p>Loose interaction; the act of scrolling shows comparisons between industries. Sparklines. At the bottom, Small Multiples show the fuller picture.</p>
+				</section>
+
+				<section>
+					<h3>Bloomberg Visual Data: State-by-State</h3>
+					<a href="http://www.bloomberg.com/visual-data/state-by-state/" target="_blank">
+					<img src="images/bloomberg.jpg" alt="State by State" />
+					<br /><span>source</span>
+					</a>
+					<p>Map, Vertical Bar Chart, Time-Series. Allows user to dig deeper and cross-compare state data.</p>
+				</section>
+
+				<section>
+					<ul>
+						<li>The primary theme among the interactions presented here is that they allow users to complete a few common, basic actions:</li>
+						<li class="fragment"><strong>Sort</strong>: Representing the data in different orders can reveal trends otherwise unseen</li>
+						<li class="fragment"><strong>Filter</strong>: Only show the data that meets certain user-defined criteria</li>
+						<li class="fragment"><strong>Compare</strong>: Allow the user to take pieces of the whole and see how they relate.</li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>Why do these visuals feel so compelling, compared to traditional static media, or data in chart format?</li>
+						<li class="fragment">The general pathway to understanding:
+							<ul>
+								<li class="fragment">Unstructured Information</li>
+								<li class="fragment">Data</li>
+								<li class="fragment">Structured Information</li>
+								<li class="fragment">Knowledge</li>
+								<li class="fragment">Wisdom</li>
+							</ul>
+						</li>
+						<li class="fragment">Visualization helps bridge the gap between Knowledge and Wisdom. Interactivity prompts exploration, and exploration leads to understanding.</li>
+						<li class="fragment">And smarter users = good for everyone.</li>
+					</ul>
+				</section>
+
+
+				<section>
+					<h2>5. In which I stop using buzzwords and we build something.</h2>
+				</section>
+
+				<section>
+					<h3>Let's get some data.</h3>
+					<ul>
+						<li class="fragment">In the interest of keeping this accessible, I'll be using as few frameworks as possible. Talk to me later if you want to know what my data workflow usually looks like, but it generally involves <a href="http://emberjs.com/" target="_blank">Ember</a>.</li>
+						<li class="fragment">We'll be scraping Twitter for followers of @CollideHalifax. If you want to follow along, head over to <a href="https://twitter.com/followers" target="_blank">Your Followers Page</a>.</li>
+						<li class="fragment"> Note: Twitter has an <a href="https://dev.twitter.com/rest/reference/get/followers/list" target="_blank">API endpoint</a> to let you do exactly this, but in the spirit of extensibility, let's do it manually.</li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<img src="images/inspect.jpg" alt="Inspect" style="float: right; margin-left: 50px;" />
+						<li>Using Chrome or Firefox, on your followers page, right-click a user's handle and click "Inspect Element".</li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<img src="images/inspector.jpg" alt="Inspector" style="float: right; margin-left: 50px;" />
+						<li>The HTML element you inspected should show up. Note the text in the element, but more importantly, the class: <pre><code>.u-linkComplex-target</code></pre></li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>In your inspector, click the "Console" tab and type the following:</li>
+						<li><pre><code>var folks = [];
+
+$('.u-linkComplex-target').each(function(){
+	folks.push('https://twitter.com/'+$(this).text())
+})
+						</code></pre></li>
+						<li>Now type <code>folks</code>. You now have an array with as many twitter handles as you'd scrolled down to see, listed by their URL.</li>
+						<img src="images/folks.jpg" alt="Folks" />
+						<li>Note: if you've scrolled so far that your array shows up condensed, stringify it with <code>JSON.stringify(folks)</code></li>
+						<li>Copy your array and save it to a file called <code>folks.json</code></li>
+					</ul>
+				</section>
+
+
+				<section>
+					<ul>
+						<li>Right now, we just have an array of follower URLs</li>
+						<li class="fragment">We'd like to get more information about these users: How many times they've tweeted, when they joined, how many followers they've got, etc.</li>
+						<li class="fragment">Lots of ways to do this; <a href="http://casperjs.org/" target="_blank">Casper/PhantomJS</a> on Node to simulate a browser and grab html data, or more commonly in Python using any number of frameworks: <a href="http://scrapy.org/" target="_blank">ScraPy</a>, <a href="http://www.crummy.com/software/BeautifulSoup/" target="_blank">BeautifulSoup</a>, <a href="https://github.com/scrapinghub/portia" target="_blank">Portia</a>, etc.</li>
+						<li class="fragment">UI-based tools exist that do this as well: <a href="https://import.io/" target="_blank">Import.io</a> is a good one.</li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>We're going to use Python's <a href="http://www.crummy.com/software/BeautifulSoup/" target="_blank">BeautifulSoup</a> library because of its low overhead and the fact we can run it in <a href="http://ipython.org/notebook.html" target="_blank">iPython Notebook</a></li>
+						<img class="fragment" src="images/ipy1.jpg" alt="ipython" />
+						<li class="fragment">Grab the gist at <a href="https://gist.github.com/philrenaud/06e8daeaff8e27f5646f" target="_blank">gist.github.com/philrenaud</a></li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<img src="images/ipy2.jpg" alt="ipython" />
+						<li>BeautifulSoup uses urllib2 to read a URL from our file and present it as text output</li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<img src="images/ipy3.jpg" alt="ipython" />
+						<li>We can leverage this in a loop: Python will iterate over our "folks" array, grabbing the HTML content of each one's page, and returning the metrics we care about.</li>
+						<li class="fragment">note the use of class-based document parsing: <pre><code>soup.find('span', {'class': 'ProfileHeaderCard-joinDateText'})['title']</code></pre></li>
+					</ul>
+				</section>
+
+				<section>
+					<ul>
+						<li>At the end of this process (will take a few minutes), an array of parsed folks will be generated, and saved to parsed_folks.json, where each entry looks like the following:</li>
+						<pre><code>
+[...
+{
+  "bio": "Data Vis + Ember + D3.js // Cofounder @AffinioInc",
+  "handle": "phil_renaud",
+  "name": "Phil Renaud",
+  "url": "http://riot.industries",
+  "tweets": [...],
+  "followers": "1,473",
+  "location": "Halifax, Nova Scotia, Canada",
+  "favorites": "1,422",
+  "following": "926",
+  "joinDate": "8:48 PM - 8 Apr 2008",
+  "num_tweets": "3,305",
+  "avatar": "https://pbs.twimg.com/profile_images/497537241405612032/TqVgj3zv_mini.jpeg"
+},
+...]
+						</code></pre>
+						<li>We can now load our parsed_folks.json file in via AJAX for further analysis.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>6. Wrangling Data</h2>
+					<h4>(Don't worry, the Python part is over now)</h4>
+				</section>
+
+
+				<section>
+					<ul>
+						<li>Now that we have our parsed data, you'll notice that some values are great for humans to read, but not necessarily so for computers.</li>
+						<pre class="fragment"><code>
+[...
+{
+  "bio": "Data Vis + Ember + D3.js // Cofounder @AffinioInc",
+  "handle": "phil_renaud",
+  "name": "Phil Renaud",
+  "url": "http://riot.industries",
+  "tweets": [...],
+  "followers": "1,473",
+  "location": "Halifax, Nova Scotia, Canada",
+  "favorites": "1,422",
+  "following": "926",
+  "joinDate": "8:48 PM - 8 Apr 2008",
+  "num_tweets": "3,305",
+  "avatar": "https://pbs.twimg.com/profile_images/497537241405612032/TqVgj3zv_mini.jpeg"
+},
+...]
+						</code></pre>
+						<li class="fragment">Example: Some users have "1.4K Followers", others have "1400 followers". Some users have never favorited anything. The join date, when it exists, is in a strange format.</li>
+						<li class="fragment">We'll use a couple javascript libraries, <a href="http://numeraljs.com/" target="_blank">Numeral.js</a> and <a href="http://momentjs.com">Moment.js</a>, to help get our data wrangled.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Clean up your numbers with Numeral.js</h3>
+					<pre><code>
+this.followers = "1.4k";
+numeral().unformat(this.followers.toLowerCase());
+//1400
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Convert your dates to timestamps with Moment.js</h3>
+					<pre><code>
+this.joinDate = "8:48 PM - 8 Apr 2008";
+moment(this.joinDate).format('X')
+//1207687680
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Convert those timestamps to "Days ago" with moment.duration() and moment.asDays()</h3>
+					<pre><code>
+moment.duration(new Date().getTime() - 1207687680*1000).asDays().toFixed(0)
+//2388
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Wrangled Data:</h2>
+					<h3><a href="http://collide.riot.industries/wrangled-data.html" target="_blank">collide.riot.industries/wrangled-data.html</a></h3>
+					<h5 class="fragment">(Did you find yourself?)</h5>
+				</section>
+
+				<section>
+					<ul>
+						<li>Cool! Takes about a second to load ~1500 records</li>
+						<li class="fragment">All our stats are there, and now cleaned up ("days active" rather than the original join date)</li>
+						<li class="fragment">Let's add some basic interactivity</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>7. Adding User Controls</h2>
+				</section>
+
+				<section>
+					<h3>Sorting</h3>
+					<ul>
+						<li>We can leverage <a href="http://underscorejs.org/" target="_blank">Underscore.js</a> ( or <a href="https://lodash.com/" target="_blank">Lo-dash</a> ) to let the user control the order in which we present our data:</li>
+						<pre><code>
+function sort_by(property){
+  folks = _.sortBy(folks, function(user){
+    return user[property] ? user[property] : 0;
+  });    
+}; //sort_by
+						</code></pre>
+						<li>A conditional check is used to return either the value requested, or in the case where the user might not have that particular property (say, they've never favorited anything), we simply return 0.</li>
+						<li>Building in a "sort in reverse" function is simple with javascript: <code>[].reverse()</code> can be used with no framework overhead.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Sorted Data:</h2>
+					<h3><a href="http://collide.riot.industries/sorting.html" target="_blank">collide.riot.industries/sorting.html</a></h3>
+				</section>
+
+				<section>
+					<h3>Filtering</h3>
+					<ul>
+						<li>While 1500 records is pretty small in data science terms, there will be times where a user only wants to analyze a small subset of them.</li>
+						<img src="images/filters.jpg" alt="Filters" style="float: right; margin-left: 50px; width: 300px" />
+						<li>Let's allow the user to filter on <strong>Less than</strong>, <strong>more than</strong>, or <strong>exactly</strong> a value of any of the properties we just sorted on:</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Filtering</h3>
+					<ul>
+						<li>Underscore provides the <code>_.filter()</code> function; let's leverage it to return better-tailored data:</li>
+						<pre><code>
+function filter_by(operator, property, val){
+  folks = _.filter(folks, function(user){
+    if (operator == 'less_than') {
+      return user[property] < val;
+    } else if (operator == 'exactly') {
+      return user[property] == val;
+    } else if (operator == 'more_than') {
+      return user[property] > val;
+    }
+  }); //_.filter
+}; //filter
+						</code></pre>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Filtered Data:</h2>
+					<h3><a href="http://collide.riot.industries/filtering.html" target="_blank">collide.riot.industries/filtering.html</a></h3>
+				</section>
+
+        <section>
+          <h3>Comparisons</h3>
+          <ul>
+            <li>A neat thing we can do is calculate how any of our numeric values relate to one another.</li>
+            <li>For any given user, how many followers do they have per day they've been on twitter? How many favorites per tweet?</li>
+            <li>We can provide a user with an interface to pick any two metrics, and create a new metric on the fly that compares them:</li>
+            <pre><code>
+function compare(p1,p2){
+  folks = _.sortBy(folks, function(user){
+    user.relative = user[p1] && user[p2] ? (user[p1] / user[p2]) : 0;
+    user.relative_terms = p1 + ' per ' + p2;
+    return user.relative
+  });
+}; //compare
+            </code></pre>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Comparisons</h3>
+          <ul>
+            <li>Since we're tabulating this new comparison metric on the fly, we may as well gather some meta-information about it.</li>
+            <pre><code>
+//get the average by using underscore's _.reduce and _.pluck
+meta.average = (_.reduce(_.pluck(folks, 'relative'), function(memo,it){ return memo+it; }) / folks.length).toFixed(2);
+
+//find the lower and upper bounds with _.min and _.max
+meta.min = (_.min(_.pluck(folks, 'relative'), function(it){ return it; })).toFixed(2);
+meta.max = (_.max(_.pluck(folks, 'relative'), function(it){ return it; })).toFixed(2);
+
+//find the length of the potentially-filtered dataset
+meta.size = folks.length
+            </code></pre>
+          </ul>
+        </section>
+
+
+        <section>
+          <h2>Comparable Data:</h2>
+          <h3><a href="http://collide.riot.industries/comparisons.html" target="_blank">collide.riot.industries/comparisons.html</a></h3>
+        </section>
+
+        <section>
+          <h3>Adding Visuals</h3>
+          <ul>
+            <li>Since we're now providing methods compare data points across two dimensions (our comparables), an appropriate data visualization method to use would be the Scatter Plot.</li>
+            <li class="fragment">SVG is well-suited to represented data-driven graphics like this on the web. <a href="http://d3js.org/" target="_blank">D3.js</a> is the best available tool for manipulating SVG in the browser.</li>
+            <li class="fragment">D3's not just for making charts; the range of potential applications is vast.</li>
+            <li class="fragment">For a very good intro, check out <a href="http://square.github.io/intro-to-d3" target="_blank">square.github.io/intro-to-d3</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Adding Visuals: Scales</h3>
+          <ul>
+            <li>Some of our data is of very narrow range (Length of chararacters in a user's bio: 0 - 200); others are very wide (followers: 5 - 980,000). Because of these wide ranges, it's sometimes appropriate to determine if a linear or logarithmic scale is needed.</li>
+            <li>D3 has methods for this - a 100-pixel-wide linear-scale graph will have its 0th pixel and 100th pixel mapped to the min and max values of your dataset, respectively.</li>
+            <li>But for a log-scale graph, D3 lets us set a domain and range to handle positioning. Check out a logarithmic X-scale:</li>
+            <pre><code>
+// Provide each graph point as [X,Y]
+var dataset = _.map(folks, function(user){
+  return [user[p1], user[p2]]
+})
+
+// Plot to a log scale mapped to 0-100
+xScale = d3.scale.log()
+  .domain([d3.min(dataset, function(d) { return d[0]; }), d3.max(dataset, function(d) { return d[0]; })])
+  .range([0,100]);
+            </code></pre>            
+          </ul>
+        </section>
+
+        <section>
+          <h3>Adding Visuals: Adding a Linear Regression / Trend Line</h3>
+          <ul>
+            <li>Since we'll be plotting many values along an X/Y plane, we have the opportunity to draw a trend line.</li>
+            <li>A javascript library called <a href="https://github.com/tmcw/simple-statistics" target="_blank">Simple Statistics</a> is light-weight and gives us the power to create linear regressions from our data:</li>
+            <pre><code>
+// Derive a linear regression
+var lin = ss.linear_regression().data(dataset).line();
+
+svg.append("path")
+  .datum(lindata)
+  .attr("class", "reg")
+  .attr("d", line);
+
+            </code></pre>            
+          </ul>
+        </section>
+
+
+        <section>
+          <h2>Visual Data:</h2>
+          <h3><a href="http://collide.riot.industries/visual-data.html" target="_blank">collide.riot.industries/visual-data.html</a></h3>
+        </section>
+
+        <section>
+          <h2>So that's how I give users interactive control over their data.</h2>
+        </section>
+
+				<section>
+					<h2>8. Addendum: All the wonderful, terrible things I now know about you.</h2>
+				</section>
+
+        <section>
+          <ul>
+            <li>Earlier, I showed a network graph visualization:</li>
+            <img src="images/network.jpg" alt="CollideHFX Network Graph" />
+          </ul>
+        </section>
+
+        <section>
+          <ul>
+            <li>Find it at <a href="http://collide.riot.industries/network.jpg" target="_blank">collide.riot.industries/network.jpg</a></li>
+            <li>This graph is made up of the 1500 people who follow @CollideHalifax, and presents them each as circles (nodes).</li>
+            <li class="fragment">Every relationship between these people is also explored, by checking their followers pages. we can see whether their followers also follow @CollideHalifax. If they do, we draw a line between them.</li>
+            <li class="fragment">The more lines you have drawn to you, the bigger your circle/label are in the graph</li>
+            <li class="fragment">I then ran a <a href="http://www.wikiwand.com/en/Modularity_(networks)" target="_blank">modularity</a> algorithm to determine how the 1500 or so people organized themselves. It found 5 basic clusters.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Yellow = Music Fans</h3>
+          <img src="images/network-music.jpg" alt="CollideHFX Network Graph" />
+        </section>
+
+        <section>
+          <h3>Blue = Halifax Startups and Tech</h3>
+          <img src="images/network-tech.jpg" alt="CollideHFX Network Graph" />
+        </section>
+
+        <section>
+          <h3>Orange = Arts and Culture</h3>
+          <img src="images/network-arts.jpg" alt="CollideHFX Network Graph" />
+        </section>
+
+        <section>
+          <h3>Teal = Local Companies and Brands</h3>
+          <img src="images/network-brands.jpg" alt="CollideHFX Network Graph" />
+        </section>
+
+        <section>
+          <h3>Pink = Halifax Locals and Venues</h3>
+          <img src="images/network-halifax.jpg" alt="CollideHFX Network Graph" />
+        </section>
+
+        <section>
+          <ul>
+            <li>Note the relative proximity of nodes of differing colors to one another.</li>
+            <li class="fragment">@innovacorp straddles the line between startups and local companies</li>
+            <li class="fragment">@aceburger is in the "locals and venues" modularity class, but mingles with the Music Fans cluster - probably has to do with people following them for info about bands playing at Gus' Pub, etc.</li>
+            <li class="fragment">The relative proximity of nodes is generated in <a href="https://gephi.github.io/" target="_blank">Gephi</a> using a pair of force-directed algorithms: OpenOrd and ForceAtlas2</li>
+            <li class="fragment">Come talk to me later if you want to talk more about network graph visualization - it's my jam.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Affinio</h3>
+          <ul>
+            <li>Affinio is a tool for analyzing groups on social networks like Twitter. Lets us run clustering algorithms to see how niches, like the 5 above, interact.</li>
+            <li class="fragment">Helps us answer questions like "Who influences local Startup employees?"</li>
+            <img class="fragment" src="images/affinio-influencers.jpg" alt="Affinio" />
+          </ul>
+        </section>
+
+        <section>
+          <h3>Affinio</h3>
+          <ul>
+            <li>or "What links are Halifax locals sharing?"</li>
+            <img class="fragment" src="images/affinio-links.jpg" alt="Affinio" />
+          </ul>
+        </section>
+
+        <section>
+          <h3>Affinio</h3>
+          <ul>
+            <li>or "What are Halifax restaurant-goers talking about?"</li>
+            <img class="fragment" src="images/affinio-tags.jpg" alt="Affinio" />
+          </ul>
+        </section>
+
+        <section>
+          <h2>Tools like this give users the opportunity to build tiny data labs.</h2>
+          <h3 class="fragment">Letting users drive interactive data = democratization of information</h3>
+        </section>
+
+        <section>
+          <h3>Thanks!</h3>
+          <p><a href="http://twitter.com/phil_renaud" target="_blank">@phil_renaud</a></p>
+          <p>Slides: <a href="http://collide.riot.industries/slides/" target="_blank">collide.riot.industries/slides</a></p>
+          <p>Little Data Lab: <a href="http://collide.riot.industries/" target="_blank">collide.riot.industries</a></p>
+          <p>Fork it: <a href="https://github.com/philrenaud/little-data-lab">github.com/philrenaud/little-data-lab</a></p>
+        </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+
+
+			Reveal.initialize({
+
+
+
+    // Display controls in the bottom right corner
+    controls: true,
+
+    // Display a presentation progress bar
+    progress: true,
+
+    // Display the page number of the current slide
+    slideNumber: false,
+
+    // Push each slide change to the browser history
+    history: true,
+
+    // Enable keyboard shortcuts for navigation
+    keyboard: true,
+
+    // Enable the slide overview mode
+    overview: true,
+
+    // Vertical centering of slides
+    center: true,
+
+    // Enables touch navigation on devices with touch input
+    touch: true,
+
+    // Loop the presentation
+    loop: false,
+
+    // Change the presentation direction to be RTL
+    rtl: false,
+
+    // Turns fragments on and off globally
+    fragments: true,
+
+    // Flags if the presentation is running in an embedded mode,
+    // i.e. contained within a limited portion of the screen
+    embedded: false,
+
+    // Number of milliseconds between automatically proceeding to the
+    // next slide, disabled when set to 0, this value can be overwritten
+    // by using a data-autoslide attribute on your slides
+    autoSlide: 0,
+
+    // Stop auto-sliding after user input
+    autoSlideStoppable: true,
+
+    // Enable slide navigation via mouse wheel
+    mouseWheel: false,
+
+    // Hides the address bar on mobile devices
+    hideAddressBar: true,
+
+    // Opens links in an iframe preview overlay
+    previewLinks: false,
+
+    // Transition speed
+    transitionSpeed: 'fast', // default/fast/slow
+
+    // Transition style for full page slide backgrounds
+    backgroundTransition: 'default', // default/none/slide/concave/convex/zoom
+
+    // Number of slides away from the current that are visible
+    viewDistance: 3,
+
+    // Parallax background image
+    parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+    // Parallax background size
+    parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+  <!-- jQuery -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="/scripts/libs/jquery-2.0.3.min.js"><\/script>')</script>
+
+  <!-- Datavis -->
+  <script src="/scripts/libs/d3.v3.min.js" charset="utf-8"></script>
+  <script src="/scripts/libs/c3.js"></script>
+    <link rel="stylesheet" href="/assets/css/c3.css">    
+
+  <!-- Tools: Time and Data -->
+  <script src="/scripts/libs/moment.min.js"></script>
+  <script src="/scripts/libs/underscore-min.js"></script>
+
+  <!-- TODO: Grunt'd -->
+  <script src="/scripts/app.js"></script>
+
+
+	</body>
+</html>
